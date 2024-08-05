@@ -22,5 +22,5 @@ public class Teacher {
     private String name;
     private Double rating;
     @OneToMany
-    private List<SemesterSubjects> subjects=new ArrayList<>();
+    private List<SemesterSubject> subjects=new ArrayList<>();
 }

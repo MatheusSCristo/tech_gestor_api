@@ -25,7 +25,8 @@ public class User {
     private String start;
     private String email;
     private String password;
-    private String image_url;
+    @Column(name = "image_url")
+    private String imageUrl;
     @OneToMany(mappedBy = "user")
     private List<SemesterUser> semesters=new ArrayList<>();
 }

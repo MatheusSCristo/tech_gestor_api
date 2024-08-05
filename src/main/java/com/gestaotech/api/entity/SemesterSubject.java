@@ -7,15 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-
 @Entity
 @Table(name = "semester_subjects")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class SemesterSubjects {
+public class SemesterSubject {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

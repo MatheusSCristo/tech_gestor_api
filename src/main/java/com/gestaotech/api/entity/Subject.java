@@ -48,5 +48,5 @@ public class Subject {
     private Structure structureOptional;
 
     @OneToMany
-    private List<SemesterSubjects> semesterSubjects;
+    private List<SemesterSubject> semesterSubjects;
 }

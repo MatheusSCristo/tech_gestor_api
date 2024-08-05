@@ -21,7 +21,7 @@ public class SemesterUser {
     private String id;
     private Integer semester;
     @OneToMany(mappedBy ="semesterUser")
-    private List<SemesterSubjects> subjects=new ArrayList<>();
+    private List<SemesterSubject> subjects=new ArrayList<>();
     @ManyToOne
     private User user;
 }
