@@ -2,6 +2,7 @@ package com.gestaotech.api.dto.SemesterSubject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gestaotech.api.dto.Subject.SubjectResponseDto;
+import com.gestaotech.api.dto.Teacher.TeacherResponseDto;
 import com.gestaotech.api.entity.SemesterSubject;
 import com.gestaotech.api.entity.SemesterUser;
 import com.gestaotech.api.entity.Subject;
@@ -14,13 +15,13 @@ import lombok.Data;
 public class SemesterSubjectResponseDto {
     private String id;
     private SubjectResponseDto subject;
-    private Teacher teacher;
+    private TeacherResponseDto teacher;
     private boolean finished;
 
     public SemesterSubjectResponseDto(SemesterSubject semesterSubject){
         this.id=semesterSubject.getId();
         this.subject=new SubjectResponseDto(semesterSubject.getSubject());
-        this.teacher=semesterSubject.getTeacher();
+        this.teacher=new TeacherResponseDto(semesterSubject.getTeacher());
         this.finished=semesterSubject.isFinished();
 
     }

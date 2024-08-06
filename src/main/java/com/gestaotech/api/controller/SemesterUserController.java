@@ -23,12 +23,12 @@ public class SemesterUserController {
         return ResponseEntity.ok().body(semesterUserService.createSemesterUser(semesterUserCreateDto));
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/getAllByUserId/{userId}")
     public ResponseEntity<List<SemesterUserResponseDto>> getAllSemesterUserByUserId(@PathVariable("userId") String userId) {
         return ResponseEntity.ok().body(semesterUserService.getAllSemesterUserByUserId(userId));
     }
 
-    @GetMapping("{semesterUserId}")
+    @GetMapping("/getSemesterUserById/{semesterUserId}")
     public ResponseEntity<SemesterUserResponseDto> getSemesterUserById(@PathVariable("semesterUserId") String semesterUserId) {
         return ResponseEntity.ok().body(semesterUserService.getSemesterUserById(semesterUserId));
     }

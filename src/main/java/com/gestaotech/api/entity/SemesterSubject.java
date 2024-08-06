@@ -23,5 +23,5 @@ public class SemesterSubject {
     private Teacher teacher;
     @ManyToOne
     private SemesterUser semesterUser;
-    private boolean finished;
+    private boolean finished=false;
 }

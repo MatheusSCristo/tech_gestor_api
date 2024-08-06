@@ -23,7 +23,6 @@ public class SemesterSubjectService {
         SemesterSubject semesterSubject = SemesterSubject.builder()
                 .subject(subjectService.getSubject(semesterSubjectCreateDto.getSubjectId()))
                 .semesterUser(semesterUser)
-                .finished(semesterSubjectCreateDto.isFinished())
                 .teacher(teacherService.findTeacherById(semesterSubjectCreateDto.getTeacherId()))
                 .build();
 

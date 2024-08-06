@@ -32,6 +32,10 @@ public class SemesterUserService {
     @Autowired
     private SubjectService subjectService;
 
+
+    @Autowired
+    private SemesterSubjectService semesterSubjectService;
+
     @Autowired
     private TeacherService teacherService;
 
@@ -45,7 +49,7 @@ public class SemesterUserService {
         semesterUser
                 .setSubjects(semesterUserCreateDto
                         .getSubjects().stream()
-                        .map(item -> subjectDtoToSubject(item, semesterUser)).toList());
+                        .map(item -> semesterSubjectService.createSemesterSubject(item,semesterUser)).toList());
         semesterUserRepository.save(semesterUser);
         return new SemesterUserResponseDto(semesterUser);
     }
@@ -69,7 +73,7 @@ public class SemesterUserService {
         Optional<SemesterUser> optionalSemesterUser = semesterUserRepository.findById(semesterUserId);
         if (optionalSemesterUser.isEmpty()) throw new SemesterUserNotFoundException();
         SemesterUser semesterUser = optionalSemesterUser.get();
-        semesterUser.setSubjects(semesterUserUpdateDto.getSubjects().stream().map(item -> subjectDtoToSubject(item, semesterUser)).toList());
+        semesterUser.setSubjects(semesterUserUpdateDto.getSubjects().stream().map(item -> semesterSubjectService.createSemesterSubject(item,semesterUser)).toList());
         return new SemesterUserResponseDto(semesterUserRepository.save(semesterUser));
     }
 
@@ -80,7 +84,6 @@ public class SemesterUserService {
                 .semesterUser(semesterUser)
                 .subject(subjectService.getSubject(semesterSubjectCreateDto.getSubjectId()))
                 .teacher(teacherService.findTeacherById(semesterSubjectCreateDto.getTeacherId()))
-                .finished(semesterSubjectCreateDto.isFinished())
                 .build();
     }
 
