@@ -21,7 +21,6 @@ public class UserResponseDto {
     private StructureResponseDto structure;
     private String start;
     private String email;
-    private String password;
     @JsonProperty("image_url")
     private String imageUrl;
     private List<SemesterUserResponseDto> semesters = new ArrayList<>();
@@ -34,7 +33,7 @@ public class UserResponseDto {
         this.start = user.getStart();
         this.email = user.getEmail();
         this.imageUrl = user.getImageUrl();
-        this.semesters = user.getSemesters().stream().map(SemesterUserResponseDto::new).toList();
+        this.semesters = user.getSemesters() != null ? user.getSemesters().stream().map(SemesterUserResponseDto::new).toList() : new ArrayList<>();
     }
 
 }

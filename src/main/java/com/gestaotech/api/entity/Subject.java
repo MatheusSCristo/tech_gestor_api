@@ -18,7 +18,6 @@ import java.util.List;
 @Data
 public class Subject {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
     private Integer ch;
@@ -39,14 +38,22 @@ public class Subject {
     )
     private List<Subject> coRequisites = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "structure_mandatory_id")
-    private Structure structureMandatory;
+    @ManyToMany
+    @JoinTable(
+            name = "subject_structure_mandatory",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "structure_mandatory_id")
+    )
+    private List<Structure> structureMandatory = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "structure_optional_id")
-    private Structure structureOptional;
+    @ManyToMany
+    @JoinTable(
+            name = "subject_structure_optional",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "structure_optional_id")
+    )
+    private List<Structure> structureOptional = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "subject")
     private List<SemesterSubject> semesterSubjects;
 }

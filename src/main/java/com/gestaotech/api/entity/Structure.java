@@ -25,11 +25,13 @@ public class Structure {
     private Integer chSubtotal;
     @Column(name = "optional_ch_min")
     private Integer optionalChMin;
-    @OneToMany(mappedBy = "structureMandatory")
+    @ManyToMany(mappedBy = "structureMandatory")
     private List<Subject> mandatorySubjects = new ArrayList<>();
-    @OneToMany(mappedBy = "structureOptional")
+    @ManyToMany(mappedBy = "structureOptional")
     private List<Subject> optionalSubjects = new ArrayList<>();
     @OneToMany(mappedBy = "structure")
     private List<User> users=new ArrayList<>();
+    @Column(name = "max_ch_per_semester")
+    private Integer maxChPerSemester;
 
 }
