@@ -21,6 +21,6 @@ public class Teacher {
     private String id;
     private String name;
     private Double rating;
-    @OneToMany
+    @OneToMany(mappedBy = "teacher")
     private List<SemesterSubject> subjects=new ArrayList<>();
 }
