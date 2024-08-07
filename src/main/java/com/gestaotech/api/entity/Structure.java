@@ -29,7 +29,7 @@ public class Structure {
     private List<Subject> mandatorySubjects = new ArrayList<>();
     @ManyToMany(mappedBy = "structureOptional")
     private List<Subject> optionalSubjects = new ArrayList<>();
-    @OneToMany(mappedBy = "structure")
+    @OneToMany(mappedBy = "structure",fetch = FetchType.LAZY)
     private List<User> users=new ArrayList<>();
     @Column(name = "max_ch_per_semester")
     private Integer maxChPerSemester;

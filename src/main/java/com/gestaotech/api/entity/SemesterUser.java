@@ -22,6 +22,6 @@ public class SemesterUser {
     private Integer semester;
     @OneToMany(mappedBy ="semesterUser")
     private List<SemesterSubject> subjects=new ArrayList<>();
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }

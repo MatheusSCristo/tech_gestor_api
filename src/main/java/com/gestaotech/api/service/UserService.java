@@ -7,6 +7,7 @@ import com.gestaotech.api.entity.User;
 import com.gestaotech.api.infra.exceptions.UserNotFoundException;
 import com.gestaotech.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class UserService {
     @Autowired
     private StructureService structureService;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
@@ -30,7 +34,7 @@ public class UserService {
                 .email(userCreateDto.getEmail())
                 .start(userCreateDto.getStart())
                 .name(userCreateDto.getName())
-                .password(userCreateDto.getPassword())
+                .password(encoder.encode(userCreateDto.getPassword()))
                 .imageUrl(userCreateDto.getImageUrl())
                 .structure(structure)
                 .build();
