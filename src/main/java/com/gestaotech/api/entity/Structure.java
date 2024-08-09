@@ -34,4 +34,16 @@ public class Structure {
     @Column(name = "max_ch_per_semester")
     private Integer maxChPerSemester;
 
+    @Override
+    public String toString() {
+        return "Structure{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", chSubtotal=" + chSubtotal +
+                ", optionalChMin=" + optionalChMin +
+                ", mandatorySubjects=" + mandatorySubjects +
+                ", optionalSubjects=" + optionalSubjects +
+                ", maxChPerSemester=" + maxChPerSemester +
+                '}';
+    }
 }

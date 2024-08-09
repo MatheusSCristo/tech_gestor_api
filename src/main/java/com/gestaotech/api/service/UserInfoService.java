@@ -27,8 +27,6 @@ public class UserInfoService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optionalUser = repository.findByEmail(username);
         if(optionalUser.isEmpty()) throw new UsernameNotFoundException("User not found");
-        User user=optionalUser.get();
-        Hibernate.initialize(user.getStructure());
-        return user;
+        return optionalUser.get();
     }
 }

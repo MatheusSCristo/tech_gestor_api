@@ -4,6 +4,7 @@ import com.gestaotech.api.dto.User.UserCreateDto;
 import com.gestaotech.api.dto.User.UserResponseDto;
 import com.gestaotech.api.entity.Structure;
 import com.gestaotech.api.entity.User;
+import com.gestaotech.api.infra.exceptions.EmailAlreadyRegisteredException;
 import com.gestaotech.api.infra.exceptions.UserNotFoundException;
 import com.gestaotech.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,7 +30,11 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public UserResponseDto createUser(UserCreateDto userCreateDto) {
+    public User createUser(UserCreateDto userCreateDto) {
+        Optional<User> optionalUserWithSameEmail = userRepository.findByEmail(userCreateDto.getEmail());
+        if (optionalUserWithSameEmail.isPresent()) {
+            throw new EmailAlreadyRegisteredException();
+        }
         Structure structure = structureService.findStructureById(userCreateDto.getStructureId());
         User user = User.builder()
                 .email(userCreateDto.getEmail())
@@ -38,7 +44,7 @@ public class UserService {
                 .imageUrl(userCreateDto.getImageUrl())
                 .structure(structure)
                 .build();
-        return new UserResponseDto(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     public List<UserResponseDto> findAllUsers() {

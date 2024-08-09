@@ -18,10 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userCreateDto));
-    }
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAllUsers() {
