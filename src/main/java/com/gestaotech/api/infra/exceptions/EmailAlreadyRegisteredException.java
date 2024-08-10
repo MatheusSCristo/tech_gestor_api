@@ -1,8 +1,8 @@
 package com.gestaotech.api.infra.exceptions;
 
-public class EmailAlreadyRegisteredException extends RuntimeException{
+public class EmailAlreadyRegisteredException extends RuntimeException {
 
-    public EmailAlreadyRegisteredException(){
-        super();
+    public EmailAlreadyRegisteredException() {
+        super("Email em uso");
     }
 }

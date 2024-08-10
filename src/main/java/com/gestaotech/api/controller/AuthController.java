@@ -43,12 +43,7 @@ public class AuthController {
     @PostMapping("/register")
     public String registerAndGetToken(@RequestBody @Valid UserCreateDto userCreateDto) {
         User user = userService.createUser(userCreateDto);
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), userCreateDto.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getUsername());
-        } else {
-            throw new UserNotFoundException();
-        }
+        return jwtService.generateToken(user.getUsername());
 
     }
 

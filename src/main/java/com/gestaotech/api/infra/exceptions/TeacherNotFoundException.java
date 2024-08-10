@@ -1,8 +1,8 @@
 package com.gestaotech.api.infra.exceptions;
 
-public class TeacherNotFoundException extends RuntimeException{
+public class TeacherNotFoundException extends RuntimeException {
 
-    public TeacherNotFoundException(){
-        super();
+    public TeacherNotFoundException() {
+        super("Doscente não encontrado");
     }
 }
