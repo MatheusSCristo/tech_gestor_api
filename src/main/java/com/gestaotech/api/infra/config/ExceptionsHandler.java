@@ -53,8 +53,8 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<RestErrorMessage> methodArgumentNotValidHandler(MethodArgumentNotValidException exception) {
-        String message = String.valueOf(Objects.requireNonNull(exception.getFieldError()).getField() + " inválido");
-        RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), message);
+//        String message = String.valueOf(Objects.requireNonNull(exception.getFieldError()).getField() + " inválido");
+        RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), exception.getFieldError().getDefaultMessage());
         return ResponseEntity.status(error.getStatus()).body(error);
     }
 
@@ -66,7 +66,7 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<RestErrorMessage> httpMessageNotReadableHandler(HttpMessageNotReadableException exception) {
-        RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+        RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), "Erro na hora de deserializar objeto");
         return ResponseEntity.status(error.getStatus()).body(error);
     }
 

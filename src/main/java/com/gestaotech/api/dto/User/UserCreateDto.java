@@ -10,20 +10,20 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class UserCreateDto {
-    @NotBlank
+    @NotBlank(message = "É necessário informar o nome do usuário")
     private String name;
     @JsonProperty("structure_id")
-    @NotNull
+    @NotNull(message = "É necessário informar a estrutura do usuário")
     private StructureEnum structureId;
-    @NotBlank
+    @NotBlank(message = "É necessário informar o semestre de início do usuário")
     private String start;
-    @NotBlank
-    @Email
+    @NotBlank(message = "É necessário informar o email do usuário")
+    @Email(message = "Email invalido")
     private String email;
-    @NotBlank
-    @Length(min = 6)
+    @NotBlank(message = "É necessário informar a senha do usuário")
+    @Length(min = 6,message = "A senha precisa ter no mínimo 6 caracteres")
     private String password;
-    @NotNull
+    @NotNull(message = "Url da imagem não pode ser null")
     @JsonProperty("image_url")
     private String imageUrl;
 

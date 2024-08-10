@@ -6,15 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "É necessário informar o email do usuário")
     @Email
     private String username;
-    @NotBlank
+    @NotBlank(message = "É necessário informar a senha do usuário")
     private String password;
 }
