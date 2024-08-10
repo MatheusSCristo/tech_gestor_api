@@ -70,5 +70,11 @@ public class ExceptionsHandler {
         return ResponseEntity.status(error.getStatus()).body(error);
     }
 
+    @ExceptionHandler(StartTimeNotValidException.class)
+    private ResponseEntity<RestErrorMessage> startTimeNotValidHandler(StartTimeNotValidException exception) {
+        RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+
 
 }
