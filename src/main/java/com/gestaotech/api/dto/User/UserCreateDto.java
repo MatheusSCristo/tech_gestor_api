@@ -2,6 +2,7 @@ package com.gestaotech.api.dto.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gestaotech.api.entity.Structure;
+import com.gestaotech.api.enums.StructureEnum;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -16,7 +17,7 @@ public class UserCreateDto {
     private String name;
     @JsonProperty("structure_id")
     @NotNull
-    private Integer structureId;
+    private StructureEnum structureId;
     @NotBlank
     private String start;
     @NotBlank

@@ -35,7 +35,7 @@ public class UserService {
         if (optionalUserWithSameEmail.isPresent()) {
             throw new EmailAlreadyRegisteredException();
         }
-        Structure structure = structureService.findStructureById(userCreateDto.getStructureId());
+        Structure structure = structureService.findStructureById(userCreateDto.getStructureId().getValue());
         User user = User.builder()
                 .email(userCreateDto.getEmail())
                 .start(userCreateDto.getStart())
