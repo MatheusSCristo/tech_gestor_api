@@ -53,7 +53,6 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<RestErrorMessage> methodArgumentNotValidHandler(MethodArgumentNotValidException exception) {
-//        String message = String.valueOf(Objects.requireNonNull(exception.getFieldError()).getField() + " inválido");
         RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), exception.getFieldError().getDefaultMessage());
         return ResponseEntity.status(error.getStatus()).body(error);
     }

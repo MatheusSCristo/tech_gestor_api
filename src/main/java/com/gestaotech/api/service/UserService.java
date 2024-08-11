@@ -29,7 +29,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
-    public User getUserById(String id) {
+    public User findUserByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    }
+
+    public User findUserById(String id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
