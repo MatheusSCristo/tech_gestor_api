@@ -25,9 +25,5 @@ public class SubjectResponseDto {
         this.ch=subject.getCh();
         this.description=subject.getDescription();
         this.preRequisites=subject.getPreRequisites().stream().map(SubjectResponseDto::new).toList();
-        this.coRequisites=subject.getCoRequisites().stream().map(SubjectResponseDto::new).toList();
-
-
-    }
-
+        this.coRequisites=subject.getCoRequisites().stream().map(SubjectResponseDto::new).toList();    }
 }

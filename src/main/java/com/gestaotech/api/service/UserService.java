@@ -62,6 +62,10 @@ public class UserService {
         return userRepository.findAll().stream().map(UserResponseDto::new).toList();
     }
 
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    }
+
 
     private boolean validateStartTime(String time) {
         String year = time.split("\\.")[0];
