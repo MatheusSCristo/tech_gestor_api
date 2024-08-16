@@ -8,6 +8,7 @@ import com.gestaotech.api.dto.User.UserResponseDto;
 import com.gestaotech.api.entity.User;
 import com.gestaotech.api.infra.exceptions.UserNotFoundException;
 import com.gestaotech.api.service.JwtService;
+import com.gestaotech.api.service.UserInfoService;
 import com.gestaotech.api.service.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -46,6 +48,9 @@ public class AuthController {
     NetHttpTransport transport = new NetHttpTransport();
     JsonFactory jsonFactory = new GsonFactory();
 
+    @Autowired
+    private UserInfoService userInfoService;
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> authenticateAndGetToken(@RequestBody @Valid AuthRequestDto authRequestDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));
@@ -64,6 +69,15 @@ public class AuthController {
         return ResponseEntity.ok().body(new AuthResponseDto(new UserResponseDto(user), jwtService.generateToken(user.getUsername())));
     }
 
+
+    @GetMapping("/validate/{accessToken}")
+    public ResponseEntity<Void> validateToken(@PathVariable String accessToken) {
+        UserDetails userDetails=userInfoService.loadUserByUsername(jwtService.extractUsername(accessToken));
+        if(jwtService.validateToken(accessToken,userDetails)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
     
 }
 
