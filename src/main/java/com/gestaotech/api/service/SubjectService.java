@@ -7,13 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class SubjectService {
 
     @Autowired
     private SubjectRepository subjectRepository;
-    public Subject getSubject(String id){
+    public Subject findSubject(String id){
         return subjectRepository.findById(id).orElseThrow(SubjectNotFoundException::new);
+    }
+
+    public List<Subject> findAllSubjects(){
+        return subjectRepository.findAll();
     }
 }

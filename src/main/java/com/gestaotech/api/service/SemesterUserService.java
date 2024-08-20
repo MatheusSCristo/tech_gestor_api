@@ -82,7 +82,7 @@ public class SemesterUserService {
         return SemesterSubject.builder()
                 .id(semesterSubjectCreateDto.getSubjectId())
                 .semesterUser(semesterUser)
-                .subject(subjectService.getSubject(semesterSubjectCreateDto.getSubjectId()))
+                .subject(subjectService.findSubject(semesterSubjectCreateDto.getSubjectId()))
                 .teacher(teacherService.findTeacherById(semesterSubjectCreateDto.getTeacherId()))
                 .build();
     }

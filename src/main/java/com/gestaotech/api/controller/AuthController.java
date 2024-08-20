@@ -2,22 +2,17 @@ package com.gestaotech.api.controller;
 
 import com.gestaotech.api.dto.Auth.AuthRequestDto;
 import com.gestaotech.api.dto.Auth.AuthResponseDto;
-import com.gestaotech.api.dto.Auth.GoogleAuthRequestDto;
+import com.gestaotech.api.dto.User.GoogleUserCreateDto;
 import com.gestaotech.api.dto.User.UserCreateDto;
 import com.gestaotech.api.dto.User.UserResponseDto;
 import com.gestaotech.api.entity.User;
 import com.gestaotech.api.infra.exceptions.UserNotFoundException;
+import com.gestaotech.api.service.GoogleService;
 import com.gestaotech.api.service.JwtService;
 import com.gestaotech.api.service.UserInfoService;
 import com.gestaotech.api.service.UserService;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,13 +37,12 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private String clientId;
-    NetHttpTransport transport = new NetHttpTransport();
-    JsonFactory jsonFactory = new GsonFactory();
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private GoogleService googleService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> authenticateAndGetToken(@RequestBody @Valid AuthRequestDto authRequestDto) {
@@ -69,15 +62,37 @@ public class AuthController {
         return ResponseEntity.ok().body(new AuthResponseDto(new UserResponseDto(user), jwtService.generateToken(user.getUsername())));
     }
 
+    @PostMapping("/google/register")
+    public ResponseEntity<AuthResponseDto> googleRegister(@RequestBody @Valid GoogleUserCreateDto googleUserCreateDto) {
+        User user = userService.createGoogleUser(googleUserCreateDto);
+        return ResponseEntity.ok().body(new AuthResponseDto(new UserResponseDto(user), jwtService.generateToken(user.getUsername())));
+    }
+
+
+    @GetMapping("/google/{idToken}")
+    public ResponseEntity<Void> verifyGoogleIdToken(@PathVariable String idToken) throws GeneralSecurityException, IOException {
+        if (googleService.verifyIdToken(idToken)) {
+            return ResponseEntity.ok().build();
+        }
+        return null;
+    }
+
 
     @GetMapping("/validate/{accessToken}")
     public ResponseEntity<Void> validateToken(@PathVariable String accessToken) {
-        UserDetails userDetails=userInfoService.loadUserByUsername(jwtService.extractUsername(accessToken));
-        if(jwtService.validateToken(accessToken,userDetails)){
+        UserDetails userDetails = userInfoService.loadUserByUsername(jwtService.extractUsername(accessToken));
+        if (jwtService.validateToken(accessToken, userDetails)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-    
+
+    @GetMapping("google/validate/{email}")
+    public ResponseEntity<AuthResponseDto> getUserLoggedByGoogle(@PathVariable String email){
+        UserResponseDto userResponseDto=googleService.getUser(email);
+        String token=jwtService.generateToken(userResponseDto.getEmail());
+        return ResponseEntity.ok().body(new AuthResponseDto(userResponseDto,token));
+    }
+
 }
 

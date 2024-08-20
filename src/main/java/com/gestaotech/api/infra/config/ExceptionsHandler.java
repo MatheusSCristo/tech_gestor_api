@@ -74,6 +74,20 @@ public class ExceptionsHandler {
         RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
         return ResponseEntity.status(error.getStatus()).body(error);
     }
+    @ExceptionHandler(GoogleEmailException.class)
+    private ResponseEntity<RestErrorMessage> googleEmailNotRegisteredHandler(GoogleEmailException exception) {
+        RestErrorMessage error = new RestErrorMessage(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    private ResponseEntity<RestErrorMessage> serverErrorHandler(RuntimeException exception) {
+        RestErrorMessage error = new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+
+
+
 
 
 }

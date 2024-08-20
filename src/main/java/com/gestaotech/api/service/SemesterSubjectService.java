@@ -21,7 +21,7 @@ public class SemesterSubjectService {
 
     public SemesterSubject createSemesterSubject(SemesterSubjectCreateDto semesterSubjectCreateDto, SemesterUser semesterUser) {
         SemesterSubject semesterSubject = SemesterSubject.builder()
-                .subject(subjectService.getSubject(semesterSubjectCreateDto.getSubjectId()))
+                .subject(subjectService.findSubject(semesterSubjectCreateDto.getSubjectId()))
                 .semesterUser(semesterUser)
                 .teacher(teacherService.findTeacherById(semesterSubjectCreateDto.getTeacherId()))
                 .build();

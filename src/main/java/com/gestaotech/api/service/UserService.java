@@ -1,5 +1,6 @@
 package com.gestaotech.api.service;
 
+import com.gestaotech.api.dto.User.GoogleUserCreateDto;
 import com.gestaotech.api.dto.User.UserCreateDto;
 import com.gestaotech.api.dto.User.UserResponseDto;
 import com.gestaotech.api.entity.Structure;
@@ -37,7 +38,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public User createUser(UserCreateDto userCreateDto) {
+    public User createUser(UserCreateDto  userCreateDto ) {
         Optional<User> optionalUserWithSameEmail = userRepository.findByEmail(userCreateDto.getEmail());
         if(!validateStartTime(userCreateDto.getStart())){
             throw new StartTimeNotValidException();
@@ -57,6 +58,30 @@ public class UserService {
                 .build();
         return userRepository.save(user);
     }
+
+    public User createGoogleUser(GoogleUserCreateDto  googleUserCreateDto ) {
+        Optional<User> optionalUserWithSameEmail = userRepository.findByEmail(googleUserCreateDto.getEmail());
+        if(!validateStartTime(googleUserCreateDto.getStart())){
+            throw new StartTimeNotValidException();
+        }
+        if (optionalUserWithSameEmail.isPresent()) {
+            throw new EmailAlreadyRegisteredException();
+        }
+
+        Structure structure = structureService.findStructureById(googleUserCreateDto.getStructureId().getValue());
+        User user = User.builder()
+                .email(googleUserCreateDto.getEmail())
+                .start(googleUserCreateDto.getStart())
+                .name(googleUserCreateDto.getName())
+                .imageUrl(googleUserCreateDto.getImageUrl())
+                .structure(structure)
+                .build();
+        return userRepository.save(user);
+    }
+
+
+
+
 
     public List<UserResponseDto> findAllUsers() {
         return userRepository.findAll().stream().map(UserResponseDto::new).toList();
