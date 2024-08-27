@@ -77,7 +77,6 @@ public class AuthController {
         return null;
     }
 
-
     @GetMapping("/validate/{accessToken}")
     public ResponseEntity<Void> validateToken(@PathVariable String accessToken) {
         UserDetails userDetails = userInfoService.loadUserByUsername(jwtService.extractUsername(accessToken));
