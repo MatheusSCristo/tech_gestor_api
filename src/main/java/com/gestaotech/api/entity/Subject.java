@@ -21,6 +21,7 @@ public class Subject {
     private String id;
     private String name;
     private Integer ch;
+    @Column(columnDefinition = "TEXT")
     private String description;
     @JoinTable(
             name = "subject_pre_requisites",
