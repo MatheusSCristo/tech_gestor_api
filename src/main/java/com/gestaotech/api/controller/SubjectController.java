@@ -3,12 +3,10 @@ package com.gestaotech.api.controller;
 import com.gestaotech.api.dto.Subject.SubjectResponseDto;
 import com.gestaotech.api.entity.Subject;
 import com.gestaotech.api.service.SubjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,4 +27,5 @@ public class SubjectController {
     public ResponseEntity<SubjectResponseDto> findSubjectById(@PathVariable String id) {
         return ResponseEntity.ok().body(new SubjectResponseDto(subjectService.findSubject(id)));
     }
+
 }

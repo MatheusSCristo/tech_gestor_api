@@ -20,8 +20,17 @@ public class SemesterUser {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private Integer semester;
-    @OneToMany(mappedBy ="semesterUser")
+    @OneToMany(mappedBy ="semesterUser",cascade = CascadeType.ALL)
     private List<SemesterSubject> subjects=new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public SemesterUser(Integer semester,User user){
+        this.semester=semester;
+        this.user=user;
+    }
+    public SemesterUser(User user){
+        this.user=user;
+    }
+
 }

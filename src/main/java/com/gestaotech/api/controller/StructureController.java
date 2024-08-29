@@ -1,15 +1,11 @@
 package com.gestaotech.api.controller;
 
 import com.gestaotech.api.dto.Structure.StructureResponseDto;
-import com.gestaotech.api.dto.Subject.SubjectMandatoryRequestDto;
-import com.gestaotech.api.dto.Subject.SubjectResponseDto;
 import com.gestaotech.api.service.StructureService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/structure")

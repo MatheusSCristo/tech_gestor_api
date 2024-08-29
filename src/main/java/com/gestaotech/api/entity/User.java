@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "image_url")
     private String imageUrl;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<SemesterUser> semesters = new ArrayList<>();
 
     public User(User user) {

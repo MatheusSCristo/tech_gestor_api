@@ -21,7 +21,13 @@ public class SemesterSubject {
     private Subject subject;
     @ManyToOne
     private Teacher teacher;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private SemesterUser semesterUser;
     private boolean finished=false;
+
+    public SemesterSubject(Subject subject,Teacher teacher,SemesterUser semesterUser){
+        this.subject=subject;
+        this.teacher=teacher;
+        this.semesterUser=semesterUser;
+    }
 }
