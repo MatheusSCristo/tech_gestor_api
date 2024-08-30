@@ -97,7 +97,6 @@ public class UserService {
                 .imageUrl(googleUserCreateDto.getImageUrl())
                 .structure(structure)
                 .build();
-       userRepository.save(user);
         User userWithDefaultSemesters = selectDefaultUserSemesters(user);
         return userRepository.save(userWithDefaultSemesters);
     }
@@ -119,10 +118,10 @@ public class UserService {
 
     private User selectDefaultUserSemesters(User user) {
         switch (user.getStructure().getId()) {
-            case 0 -> user.setSemesters(getDefaultUserSemesters(user, new TiMatutino().getList()));
             case 1 -> user.setSemesters(getDefaultUserSemesters(user, new TiNoturno().getList()));
-            case 2 -> user.setSemesters(getDefaultUserSemesters(user, new Software().getList()));
-            case 3 -> user.setSemesters(getDefaultUserSemesters(user, new Computacao().getList()));
+            case 2 -> user.setSemesters(getDefaultUserSemesters(user, new Computacao().getList()));
+            case 3 -> user.setSemesters(getDefaultUserSemesters(user, new Software().getList()));
+            default -> user.setSemesters(getDefaultUserSemesters(user, new TiMatutino().getList()));
         }
         return user;
     }
@@ -130,17 +129,17 @@ public class UserService {
     private List<SemesterUser> getDefaultUserSemesters(User user, List<List<String>> semesters) {
         return IntStream.range(0, semesters.size())
                 .mapToObj(i -> {
-                    SemesterUser semesterUser=new SemesterUser(i+1,user);
-                    semesterUser.setSubjects(getListSemesterSubject(semesters.get(i),semesterUser));
+                    SemesterUser semesterUser = new SemesterUser(i + 1, user);
+                    semesterUser.setSubjects(getListSemesterSubject(semesters.get(i), semesterUser));
                     return semesterUser;
                 })
                 .toList();
     }
 
-    private List<SemesterSubject> getListSemesterSubject(List<String> list,SemesterUser semesterUser) {
+    private List<SemesterSubject> getListSemesterSubject(List<String> list, SemesterUser semesterUser) {
         Teacher teacher = teacherService.findTeacherById("0");
         List<Subject> subjects = subjectService.getSubjectsByIds(list);
-        return subjects.stream().map(item -> new SemesterSubject(item, teacher,semesterUser)).toList();
+        return subjects.stream().map(item -> new SemesterSubject(item, teacher, semesterUser)).toList();
     }
 
 }
