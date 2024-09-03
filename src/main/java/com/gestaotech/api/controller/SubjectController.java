@@ -28,4 +28,9 @@ public class SubjectController {
         return ResponseEntity.ok().body(new SubjectResponseDto(subjectService.findSubject(id)));
     }
 
+    @GetMapping("/findOptionalSubjects/{structureId}")
+    public ResponseEntity<List<SubjectResponseDto>> findOptionalSubjectsByStructureId(@PathVariable Integer structureId) {
+        return ResponseEntity.ok().body(subjectService.findOptionalSubjectsByStructureId(structureId).stream().map(SubjectResponseDto::new).toList());
+    }
+
 }
