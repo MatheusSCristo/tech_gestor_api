@@ -20,7 +20,8 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
-    private Double rating;
+    @ElementCollection
+    private List<Integer> rating;
     @OneToMany(mappedBy = "teacher")
     private List<SemesterSubject> subjects=new ArrayList<>();
 }
