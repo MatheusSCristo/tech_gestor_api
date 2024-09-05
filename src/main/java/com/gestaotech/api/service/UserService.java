@@ -60,7 +60,7 @@ public class UserService {
 
     public User createUser(UserCreateDto userCreateDto) {
         Optional<User> optionalUserWithSameEmail = userRepository.findByEmail(userCreateDto.getEmail());
-        if (!validateStartTime(userCreateDto.getStart())) {
+        if (validateStartTime(userCreateDto.getStart())) {
             throw new StartTimeNotValidException();
         }
         if (optionalUserWithSameEmail.isPresent()) {
@@ -82,7 +82,7 @@ public class UserService {
 
     public User createGoogleUser(GoogleUserCreateDto googleUserCreateDto) {
         Optional<User> optionalUserWithSameEmail = userRepository.findByEmail(googleUserCreateDto.getEmail());
-        if (!validateStartTime(googleUserCreateDto.getStart())) {
+        if (validateStartTime(googleUserCreateDto.getStart())) {
             throw new StartTimeNotValidException();
         }
         if (optionalUserWithSameEmail.isPresent()) {
@@ -113,7 +113,7 @@ public class UserService {
     private boolean validateStartTime(String time) {
         String year = time.split("\\.")[0];
         String semester = time.split("\\.")[1];
-        return LocalDateTime.now().getYear() - Integer.parseInt(year) <= 10 && (Objects.equals(semester, "2") || Objects.equals(semester, "1"));
+        return !(LocalDateTime.now().getYear() - Integer.parseInt(year) <= 10 && (Objects.equals(semester, "2") || Objects.equals(semester, "1")));
     }
 
     public List<SemesterUser> selectDefaultUserSemesters(User user) {
@@ -143,36 +143,6 @@ public class UserService {
                 .toList();
     }
 
-
-    public List<SemesterUser> resetDefaultUserSemesters(User user) {
-        List<SemesterUser> userSemesterList = user.getSemesters();
-        System.out.print(userSemesterList);
-        switch (user.getStructure().getId()) {
-            case 1 -> {
-                return resetToDefaultUserSemesters(user, new TiNoturno().getList(), userSemesterList);
-            }
-            case 2 -> {
-                return resetToDefaultUserSemesters(user, new Computacao().getList(), userSemesterList);
-            }
-            case 3 -> {
-                return resetToDefaultUserSemesters(user, new Software().getList(), userSemesterList);
-            }
-            default -> {
-                return resetToDefaultUserSemesters(user, new TiMatutino().getList(), userSemesterList);
-            }
-        }
-    }
-
-
-    private List<SemesterUser> resetToDefaultUserSemesters(User user, List<List<String>> semesters, List<SemesterUser> semesterUserList) {
-        return IntStream.range(0, semesters.size())
-                .mapToObj(i -> {
-                    SemesterUser semesterUser = semesterUserList.get(i);
-                    semesterUser.setSubjects(getListSemesterSubject(semesters.get(i), semesterUser));
-                    return semesterUser;
-                })
-                .toList();
-    }
 
 
     private List<SemesterSubject> getListSemesterSubject(List<String> list, SemesterUser semesterUser) {
