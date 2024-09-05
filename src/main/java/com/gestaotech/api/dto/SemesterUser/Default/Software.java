@@ -14,7 +14,7 @@ public class Software {
             List.of("DIM0501", "DIM0504", "DIM0508","IMD0036","IMD0039","IMD0040"),
             List.of("DIM0125","DIM0138","DIM0507","DIM0546","DIM0549","IMD0043"),
             List.of("DIM0124","DIM0505","DIM0547"),
-            List.of("DIM0511","DIM0516","DIM0548","IMD0614")
+            List.of("DIM0511","DIM0516","DIM0548","DIM0614")
     );
 
 
