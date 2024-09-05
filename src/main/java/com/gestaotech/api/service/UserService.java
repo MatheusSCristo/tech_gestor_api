@@ -109,7 +109,6 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
-
     private boolean validateStartTime(String time) {
         String year = time.split("\\.")[0];
         String semester = time.split("\\.")[1];
