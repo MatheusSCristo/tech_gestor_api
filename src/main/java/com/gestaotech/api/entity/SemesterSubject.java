@@ -1,6 +1,7 @@
 package com.gestaotech.api.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,8 @@ public class SemesterSubject {
     private Subject subject;
     @ManyToOne
     private Teacher teacher;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
+    @JsonBackReference
     private SemesterUser semesterUser;
     private boolean finished=false;
 

@@ -20,20 +20,24 @@ public class SubjectService {
     private StructureService structureService;
 
     public Subject findSubject(String id) {
-        return subjectRepository.findById(id).orElseThrow(SubjectNotFoundException::new);
+        try {
+            return subjectRepository.findById(id).orElseThrow();
+        } catch (Exception exception) {
+            throw new SubjectNotFoundException(id);
+        }
     }
 
     public List<Subject> findAllSubjects() {
         return subjectRepository.findAll();
     }
 
-    public List<Subject> getSubjectsByIds(List<String> ids){
+    public List<Subject> getSubjectsByIds(List<String> ids) {
         return subjectRepository.findAllById(ids);
     }
 
     public List<Subject> findOptionalSubjectsByStructureId(Integer structureId) {
-        Structure structure=structureService.findStructureById(structureId);
-        List<Subject> subjectList=findAllSubjects();
-        return subjectList.stream().filter(item->!structure.getMandatorySubjects().contains(item)).toList();
+        Structure structure = structureService.findStructureById(structureId);
+        List<Subject> subjectList = findAllSubjects();
+        return subjectList.stream().filter(item -> !structure.getMandatorySubjects().contains(item)).toList();
     }
 }

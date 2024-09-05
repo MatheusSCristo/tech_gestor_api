@@ -1,6 +1,7 @@
 package com.gestaotech.api.entity;
 
 
+import com.gestaotech.api.dto.Subject.SubjectResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,4 +58,6 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject")
     private List<SemesterSubject> semesterSubjects;
+
+
 }

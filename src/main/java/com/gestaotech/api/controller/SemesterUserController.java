@@ -1,8 +1,10 @@
 package com.gestaotech.api.controller;
 
-import com.gestaotech.api.dto.SemesterUser.SemesterUserCreateDto;
 import com.gestaotech.api.dto.SemesterUser.SemesterUserResponseDto;
 import com.gestaotech.api.dto.SemesterUser.SemesterUserUpdateDto;
+import com.gestaotech.api.dto.User.UserResponseDto;
+import com.gestaotech.api.entity.SemesterUser;
+import com.gestaotech.api.entity.User;
 import com.gestaotech.api.service.SemesterUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,9 @@ public class SemesterUserController {
     @Autowired
     private SemesterUserService semesterUserService;
 
-    @PostMapping
-    public ResponseEntity<SemesterUserResponseDto> createSemesterUser(@RequestBody @Valid SemesterUserCreateDto semesterUserCreateDto) {
-        return ResponseEntity.ok().body(semesterUserService.createSemesterUser(semesterUserCreateDto));
+    @PostMapping("{id}")
+    public ResponseEntity<List<SemesterUserResponseDto>> saveSemesters(@PathVariable String id,@RequestBody @Valid SemesterUserUpdateDto semesters) {
+        return ResponseEntity.ok().body(semesterUserService.saveSemesters(semesters,id));
     }
 
     @GetMapping("/getAllByUserId/{userId}")
@@ -33,9 +35,9 @@ public class SemesterUserController {
         return ResponseEntity.ok().body(semesterUserService.getSemesterUserById(semesterUserId));
     }
 
-    @PutMapping("{semesterUserId}")
-    public ResponseEntity<SemesterUserResponseDto> updateSemesterUser(@PathVariable("semesterUserId") String semesterUserId, @RequestBody SemesterUserUpdateDto semesterUserUpdateDto) {
-        return ResponseEntity.ok().body(semesterUserService.updateSemesterUser(semesterUserId, semesterUserUpdateDto));
+    @PutMapping("{userId}")
+    public ResponseEntity<List<SemesterUserResponseDto>> resetSemesterToDefault(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok().body(semesterUserService.resetSemesterToDefault(userId).stream().map(SemesterUserResponseDto::new).toList());
     }
 
 

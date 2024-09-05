@@ -76,8 +76,8 @@ public class UserService {
                 .imageUrl(userCreateDto.getImageUrl())
                 .structure(structure)
                 .build();
-        User userWithDefaultSemesters = selectDefaultUserSemesters(user);
-        return userRepository.save(userWithDefaultSemesters);
+        user.setSemesters(selectDefaultUserSemesters(user));
+        return userRepository.save(user);
     }
 
     public User createGoogleUser(GoogleUserCreateDto googleUserCreateDto) {
@@ -97,8 +97,8 @@ public class UserService {
                 .imageUrl(googleUserCreateDto.getImageUrl())
                 .structure(structure)
                 .build();
-        User userWithDefaultSemesters = selectDefaultUserSemesters(user);
-        return userRepository.save(userWithDefaultSemesters);
+        user.setSemesters(selectDefaultUserSemesters(user));
+        return userRepository.save(user);
     }
 
     public List<UserResponseDto> findAllUsers() {
@@ -116,14 +116,21 @@ public class UserService {
         return LocalDateTime.now().getYear() - Integer.parseInt(year) <= 10 && (Objects.equals(semester, "2") || Objects.equals(semester, "1"));
     }
 
-    private User selectDefaultUserSemesters(User user) {
+    public List<SemesterUser> selectDefaultUserSemesters(User user) {
         switch (user.getStructure().getId()) {
-            case 1 -> user.setSemesters(getDefaultUserSemesters(user, new TiNoturno().getList()));
-            case 2 -> user.setSemesters(getDefaultUserSemesters(user, new Computacao().getList()));
-            case 3 -> user.setSemesters(getDefaultUserSemesters(user, new Software().getList()));
-            default -> user.setSemesters(getDefaultUserSemesters(user, new TiMatutino().getList()));
+            case 1 -> {
+                return getDefaultUserSemesters(user, new TiNoturno().getList());
+            }
+            case 2 -> {
+                return getDefaultUserSemesters(user, new Computacao().getList());
+            }
+            case 3 -> {
+                return getDefaultUserSemesters(user, new Software().getList());
+            }
+            default -> {
+                return getDefaultUserSemesters(user, new TiMatutino().getList());
+            }
         }
-        return user;
     }
 
     private List<SemesterUser> getDefaultUserSemesters(User user, List<List<String>> semesters) {
@@ -135,6 +142,38 @@ public class UserService {
                 })
                 .toList();
     }
+
+
+    public List<SemesterUser> resetDefaultUserSemesters(User user) {
+        List<SemesterUser> userSemesterList = user.getSemesters();
+        System.out.print(userSemesterList);
+        switch (user.getStructure().getId()) {
+            case 1 -> {
+                return resetToDefaultUserSemesters(user, new TiNoturno().getList(), userSemesterList);
+            }
+            case 2 -> {
+                return resetToDefaultUserSemesters(user, new Computacao().getList(), userSemesterList);
+            }
+            case 3 -> {
+                return resetToDefaultUserSemesters(user, new Software().getList(), userSemesterList);
+            }
+            default -> {
+                return resetToDefaultUserSemesters(user, new TiMatutino().getList(), userSemesterList);
+            }
+        }
+    }
+
+
+    private List<SemesterUser> resetToDefaultUserSemesters(User user, List<List<String>> semesters, List<SemesterUser> semesterUserList) {
+        return IntStream.range(0, semesters.size())
+                .mapToObj(i -> {
+                    SemesterUser semesterUser = semesterUserList.get(i);
+                    semesterUser.setSubjects(getListSemesterSubject(semesters.get(i), semesterUser));
+                    return semesterUser;
+                })
+                .toList();
+    }
+
 
     private List<SemesterSubject> getListSemesterSubject(List<String> list, SemesterUser semesterUser) {
         Teacher teacher = teacherService.findTeacherById("0");

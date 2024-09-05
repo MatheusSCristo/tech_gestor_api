@@ -1,5 +1,6 @@
 package com.gestaotech.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,8 @@ public class SemesterUser {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private Integer semester;
-    @OneToMany(mappedBy ="semesterUser",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="semesterUser",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<SemesterSubject> subjects=new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -32,5 +34,14 @@ public class SemesterUser {
     public SemesterUser(User user){
         this.user=user;
     }
+
+    public SemesterUser(User user,Integer semester,List<SemesterSubject> subjects){
+        this.user=user;
+        this.semester=semester;
+        this.subjects=subjects;
+    }
+
+
+
 
 }

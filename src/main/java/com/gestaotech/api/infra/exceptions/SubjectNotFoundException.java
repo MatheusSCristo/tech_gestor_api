@@ -1,7 +1,7 @@
 package com.gestaotech.api.infra.exceptions;
 
 public class SubjectNotFoundException extends RuntimeException {
-    public SubjectNotFoundException() {
-        super("Componente curricular não encontrado");
+    public SubjectNotFoundException(String id) {
+        super("Componente curricular " + id + " não encontrado");
     }
 }

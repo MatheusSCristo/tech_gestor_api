@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 @RestControllerAdvice
@@ -82,7 +83,7 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(RuntimeException.class)
     private ResponseEntity<RestErrorMessage> serverErrorHandler(RuntimeException exception) {
-        RestErrorMessage error = new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+        RestErrorMessage error = new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), Arrays.toString(exception.getStackTrace()));
         return ResponseEntity.status(error.getStatus()).body(error);
     }
 
